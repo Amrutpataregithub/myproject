@@ -1,0 +1,50 @@
+import json
+import pymysql
+import csv
+import boto3
+s3 = boto3.client('s3')
+
+host='database-1.cxk4e82g4m3z.ap-south-1.rds.amazonaws.com'
+username='admin'
+password='admin#123'
+database='company'
+port=3306
+
+def connect_db():
+    conn = pymysql.connect(host=host, user=username, port=port,password=password, database=database)
+    return conn
+
+def read_from_db(conn):
+    cursor = conn.cursor()
+    cursor.execute("select * from emp")
+    result = cursor.fetchall()
+    return result
+
+def create_file(filename,data):
+    try:
+        with open('/tmp/{}'.format(filename), 'w') as file:
+            writer=csv.writer(file)
+            writer.writerow(["id", "name", "salary"])
+            writer.writerows(data)
+            return True
+    except Exception as e:
+        print(e)
+
+def upload_to_s3(filename):
+    s3.upload_file('/tmp/{}'.format(filename), 'rds-lambda-s3-996393380048-ap-south-1-an',filename)
+    return True
+
+def lambda_handler(event, context):
+    filename='emp.csv'
+    conn = connect_db()
+    data = read_from_db(conn)
+    status = create_file(filename, data)
+    if status:
+        print('file created suceesfully')
+    else:
+        print('file creation failed')
+    upload_to_s3(filename)
+    print('uploaded to s3 successfully')
+    print("done")
+
+    

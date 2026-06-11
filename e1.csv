@@ -1,0 +1,11 @@
+emp_id,emp_name,department,salary,email
+101,John Doe,IT,50000,john@example.com
+102,Jane Smith,HR,60000,jane@example.com
+103,Ravi Kumar,Finance,55000,ravi@example.com
+104,Anita Sharma,IT,,anita@example.com
+105,,HR,62000,meena@example.com
+106,Rahul Singh,Finance,58000,
+107,John Doe,IT,50000,john@example.com
+108,Pooja Mehta,,54000,pooja@example.com
+109,Amit Patel,IT,50000,amit@example.com
+109,Amit Patel,IT,50000,amit@example.com
